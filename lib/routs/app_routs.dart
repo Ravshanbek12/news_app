@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:news_app/models/article.dart';
 
 import '../pages/news.dart';
 import '../pages/news_single.dart';
@@ -19,8 +20,10 @@ abstract class AppRouts {
         );
 
       case '/news_single':
+        final arguments = settings.arguments;
+        final article = arguments as ArticleModel;
         return CupertinoPageRoute(
-          builder: (_) => const NewsSingleScreen(),
+          builder: (_) =>  NewsSingleScreen(article: article,),
         );
 
       // case '/news_single':

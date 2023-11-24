@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app/models/status.dart';
 import 'package:news_app/news/news_bloc.dart';
 
+import '../widgets/news_item.dart';
+
 class NewsScreen extends StatelessWidget {
   const NewsScreen({super.key});
 
@@ -16,7 +18,9 @@ class NewsScreen extends StatelessWidget {
           body: BlocBuilder<NewsBloc, NewsState>(
             builder: (context, state) {
               if(state.status==LoadingStatus.pure){
-                context.read<NewsBloc>().add(GetNewsList(onSuccess: (){}, onFailure: (message){}));
+                context.read<NewsBloc>().add(GetNewsList(onSuccess: (){
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Hammasi chiki chiki")));
+                }, onFailure: (message){}));
                 return const SizedBox();
               }
               else if (state.status == LoadingStatus.loading) {
@@ -25,47 +29,8 @@ class NewsScreen extends StatelessWidget {
                 );
               } else if (state.status == LoadingStatus.loadedWithSuccess) {
                 return ListView.separated(
-                    itemBuilder: (_, index) => Container(
-                          padding: const EdgeInsets.all(16),
-                          child: Row(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
-                                child: Image.network(
-                                  state.news[0].articles[index].urlToImage,
-                                  width: 60,
-                                  height: 60,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      state.news[0].articles[index].title,
-                                      style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                    Text(
-                                      state.news[0].articles[index].description,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
+                  // physics: const ScrollPhysics(),
+                    itemBuilder: (_, index) => NewWidget(article:state.news[0].articles[index]),
                     separatorBuilder: (_, __) => const SizedBox(
                           height: 16,
                         ),
@@ -81,3 +46,5 @@ class NewsScreen extends StatelessWidget {
     );
   }
 }
+
+
