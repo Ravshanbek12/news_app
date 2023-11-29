@@ -14,6 +14,7 @@ class NewsSingleScreen extends StatelessWidget {
         title: const Text("Title"),
       ),
       body: ListView(
+        physics: const FixedExtentScrollPhysics(),
         children: [
           Hero(
             tag: article.urlToImage,
